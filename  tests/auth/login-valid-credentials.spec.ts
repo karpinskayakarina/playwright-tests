@@ -1,5 +1,10 @@
 import { test, expect } from "@playwright/test";
 
+test.skip(
+  !!process.env.CI,
+  "Test is skipped in CI due to the Cloudflare protection."
+);
+
 test("Verify login with valid credentials", async ({ page }) => {
   await page.goto("/auth/login");
 
