@@ -32,12 +32,19 @@ export class ProductPage {
   }
 
   async addToCart() {
+    await expect(
+      this.page.getByRole("button", { name: "Add to cart" })
+    ).toBeVisible();
     await this.page.locator('[data-test="add-to-cart"]').click();
     await expect(
       this.page.getByText("Product added to shopping cart.")
     ).toBeVisible();
   }
+
   async addToFavorites() {
+    await expect(
+      this.page.getByRole("button", { name: "Add to favourites" })
+    ).toBeVisible();
     await this.page.locator('[data-test="add-to-favorites"]').click();
     await expect(
       this.page.getByText(

@@ -3,9 +3,9 @@ import { Page } from "@playwright/test";
 export class LoginPage {
   constructor(private page: Page) {}
 
-  private emailInput = this.page.locator('[data-test="email"]');
-  private passwordInput = this.page.locator('[data-test="password"]');
-  private submitBtn = this.page.locator('[data-test="login-submit"]');
+  private emailInput = this.page.getByTestId("email");
+  private passwordInput = this.page.getByTestId("password");
+  private submitBtn = this.page.getByTestId("login-submit");
 
   async goto() {
     await this.page.goto("/auth/login");
