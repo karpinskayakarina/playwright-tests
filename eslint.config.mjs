@@ -1,15 +1,12 @@
-// @ts-check
-
-import eslint from "@eslint/js";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument */
+import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import playwright from "eslint-plugin-playwright";
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
-  {
-    ignores: ["playwright-report/**", "node_modules/**", "dist/**"],
-  },
+export default [
+  { ignores: ["playwright-report/**", "node_modules/**", "dist/**"] },
+  js.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
       parserOptions: {
@@ -21,18 +18,14 @@ export default tseslint.config(
     },
   },
   {
+    files: ["tests/**/*.{ts,tsx}"],
+    plugins: { playwright },
+    ...playwright.configs["flat/recommended"],
+  },
+  {
     rules: {
-      "@typescript-eslint/no-explicity-any": "off",
+      "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-floating-promises": "error",
     },
   },
-  {
-    ...playwright.configs["flat/recommended"],
-    files: ["tests/**"],
-    rules: {
-      ...playwright.configs["flat/recommended"].rules,
-      // Customize Playwright rules
-      // ...
-    },
-  }
-);
+];
