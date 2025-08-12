@@ -14,7 +14,7 @@ test.describe("Product details", () => {
     await product.expectPrice("14.15");
     await product.expectProductButtonsVisible("addToCart", "addToFavorites");
 
-    await product.addToCart();
+    await product.addToCartAndCheckMessage();
     await product.addToFavorites();
 
     await home.expectCartCount("1");
