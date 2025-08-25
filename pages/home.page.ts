@@ -9,20 +9,18 @@ export class HomePage {
 
   async openProductByName(name: string) {
     await this.page
-      .locator('[data-test="product-name"]', { hasText: name })
+      .getByTestId("product-name")
+      .filter({ hasText: name })
       .click();
   }
 
-  async expectCartCount(expectedCount: string) {
-    await expect(this.page.locator('[data-test="cart-quantity"]')).toHaveText(
-      expectedCount
-    );
-  }
+  async selectSort(label: string) {
+    const names = this.page.getByTestId("product-name");
+    const before = await names.allTextContents();
 
-  async selectSort(optionLabel: string) {
-    await this.page
-      .locator('[data-test="sort"]')
-      .selectOption({ label: optionLabel });
+    await this.page.getByTestId("sort").selectOption({ label });
+
+    await expect.poll(() => names.allTextContents()).not.toEqual(before);
   }
 
   async getProductNames(): Promise<string[]> {

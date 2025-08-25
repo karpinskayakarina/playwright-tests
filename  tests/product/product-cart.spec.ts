@@ -17,7 +17,7 @@ test("Verify user can add product to cart", async ({ page }) => {
 
   await product.addToCartAndCheckMessage();
 
-  await home.expectCartCount("1");
+  await product.header.expectCartCount("1");
 
   await product.openCart();
 

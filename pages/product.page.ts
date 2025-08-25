@@ -1,36 +1,24 @@
+import { HeaderFragment } from " tests/fragments/header.fragments";
 import { Page, expect } from "@playwright/test";
 
 export class ProductPage {
-  constructor(private page: Page) {}
-
-  private selectors = {
+  private readonly selectors = {
     addToCart: '[data-test="add-to-cart"]',
-    addToFavorites: '[data-test="add-to-favorites"]',
-    cartIcon: '[data-test="nav-cart"]',
     cartQuantity: '[data-test="cart-quantity"]',
-  };
+    cartIcon: '[data-test="nav-cart"]',
+  } as const;
+
+  constructor(private page: Page) {
+    this.header = new HeaderFragment(page);
+  }
+  readonly header: HeaderFragment;
 
   async expectName(name: string) {
-    await expect(this.page.locator('[data-test="product-name"]')).toHaveText(
-      name
-    );
+    await expect(this.page.getByTestId("product-name")).toHaveText(name);
   }
 
   async expectPrice(price: string | RegExp) {
-    await expect(this.page.locator('[data-test="unit-price"]')).toContainText(
-      price
-    );
-  }
-
-  async expectProductButtonsVisible(
-    ...buttons: (keyof typeof this.selectors)[]
-  ) {
-    for (const button of buttons) {
-      await expect(
-        this.page.locator(this.selectors[button]),
-        `Button [${button}] should be visible`
-      ).toBeVisible();
-    }
+    await expect(this.page.getByTestId("unit-price")).toContainText(price);
   }
 
   async addToCartAndCheckMessage() {
@@ -53,7 +41,10 @@ export class ProductPage {
   }
 
   async addToFavorites() {
-    await this.page.locator(this.selectors.addToFavorites).click();
+    await expect(
+      this.page.getByRole("button", { name: "Add to favourites" })
+    ).toBeVisible();
+    await this.page.getByTestId("add-to-favorites").click();
     await expect(
       this.page.getByText(
         "Unauthorized, can not add product to your favorite list."

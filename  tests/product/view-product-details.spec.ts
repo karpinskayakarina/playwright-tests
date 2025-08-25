@@ -12,11 +12,10 @@ test.describe("Product details", () => {
 
     await product.expectName("Combination Pliers");
     await product.expectPrice("14.15");
-    await product.expectProductButtonsVisible("addToCart", "addToFavorites");
 
     await product.addToCartAndCheckMessage();
     await product.addToFavorites();
 
-    await home.expectCartCount("1");
+    await product.header.expectCartCount("1");
   });
 });
