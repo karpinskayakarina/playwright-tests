@@ -1,13 +1,11 @@
 import { test } from "@playwright/test";
 import { HomePage } from "../../pages/home.page";
 import { ProductPage } from "../../pages/product.page";
-import { HeaderPage } from "../../pages/header.page";
 
 test.describe("Product details", () => {
   test("Verify price, add to cart and add to favorites", async ({ page }) => {
     const home = new HomePage(page);
     const product = new ProductPage(page);
-    const header = new HeaderPage(page);
 
     await home.goto();
     await home.openProductByName("Combination Pliers");
@@ -18,6 +16,6 @@ test.describe("Product details", () => {
     await product.addToCart();
     await product.addToFavorites();
 
-    await header.expectCartCount("1");
+    await product.header.expectCartCount("1");
   });
 });

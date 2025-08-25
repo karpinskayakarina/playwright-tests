@@ -1,7 +1,11 @@
+import { HeaderFragment } from " tests/fragments/header.fragments";
 import { Page, expect } from "@playwright/test";
 
 export class ProductPage {
-  constructor(private page: Page) {}
+  constructor(private page: Page) {
+    this.header = new HeaderFragment(page);
+  }
+  readonly header: HeaderFragment;
 
   private selectors = {
     addToCart: '[data-test="add-to-cart"]',
