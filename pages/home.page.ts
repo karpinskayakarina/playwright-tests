@@ -9,7 +9,8 @@ export class HomePage {
 
   async openProductByName(name: string) {
     await this.page
-      .locator('[data-test="product-name"]', { hasText: name })
+      .getByTestId("product-name")
+      .filter({ hasText: name })
       .click();
   }
 }

@@ -4,7 +4,7 @@ export class HeaderPage {
   constructor(private page: Page) {}
 
   async expectCartCount(expectedCount: string) {
-    await expect(this.page.locator('[data-test="cart-quantity"]')).toHaveText(
+    await expect(this.page.getByTestId("cart-quantity")).toHaveText(
       expectedCount
     );
   }
