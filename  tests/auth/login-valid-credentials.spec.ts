@@ -1,4 +1,6 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
+import { LoginPage } from "@pages/login.page";
+import { AccountPage } from "@pages/account.page";
 import { VALID_USER } from "../fixtures/credentials";
 
 test.skip(
@@ -7,14 +9,10 @@ test.skip(
 );
 
 test("Verify login with valid credentials", async ({ page }) => {
-  await page.goto("/auth/login");
+  const login = new LoginPage(page);
+  const account = new AccountPage(page);
 
-  await page.fill('[data-test="email"]', VALID_USER.email);
-  await page.fill('[data-test="password"]', VALID_USER.password);
-  await page.click('[data-test="login-submit"]');
-
-  await expect(page).toHaveURL("/account");
-
-  await expect(page.locator("h1")).toHaveText("My account");
-  await expect(page.locator("nav")).toContainText("Jane Doe");
+  await login.goto();
+  await login.login(VALID_USER.email, VALID_USER.password);
+  await account.assertBasics();
 });
