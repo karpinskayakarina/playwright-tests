@@ -3,6 +3,11 @@ import { LoginPage } from "@pages/login.page";
 import { AccountPage } from "@pages/account.page";
 import path from "path";
 
+test.skip(
+  !!process.env.CI,
+  "Test is skipped in CI due to the Cloudflare protection."
+);
+
 const authFile = path.join(__dirname, "../playwright/.auth/user.json");
 
 test.use({ storageState: authFile });
