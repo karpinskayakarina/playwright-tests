@@ -1,41 +1,52 @@
-import { Categories } from " tests/catalog/categories";
-import { Page, expect } from "@playwright/test";
-export class HomePage {
-  constructor(private page: Page) {}
+import { Category } from " tests/enums/product.categories";
+import { expect, Locator, Page } from "@playwright/test";
 
-  async goto() {
+export class HomePage {
+  private readonly titles: Locator;
+
+  constructor(private readonly page: Page) {
+    this.titles = page.getByTestId("product-name");
+  }
+
+  async goto(): Promise<void> {
     await this.page.goto("/");
   }
 
-  async openProductByName(name: string) {
-    await this.page
-      .getByTestId("product-name")
-      .filter({ hasText: name })
-      .click();
+  async openProductByName(name: string): Promise<void> {
+    await this.titles.filter({ hasText: name }).click();
   }
 
-  async selectSort(label: string) {
-    const names = this.page.getByTestId("product-name");
-    const before = await names.allTextContents();
+  async selectSort(label: string): Promise<void> {
+    const names: Locator = this.titles;
+
+    const before = (await names.allTextContents()).join("|");
 
     await this.page.getByTestId("sort").selectOption({ label });
 
-    await expect.poll(() => names.allTextContents()).not.toEqual(before);
+    await expect
+      .poll(async () => (await names.allTextContents()).join("|"))
+      .not.toBe(before);
+
+    await expect
+      .poll(async () => {
+        const a = (await names.allTextContents()).join("|");
+        await this.page.waitForTimeout(50);
+        const b = (await names.allTextContents()).join("|");
+        return a === b;
+      })
+      .toBe(true);
   }
 
   async getProductNames(): Promise<string[]> {
-    return this.page.locator('[data-test="product-name"]').allTextContents();
+    const texts = await this.titles.allTextContents();
+    return texts.map((s) => s.trim());
   }
 
-  async getProductPrices(): Promise<string[]> {
-    return this.page.locator('[data-test="product-price"]').allTextContents();
-  }
-
-  async clickCategory(category: Categories) {
-    const categoryLocator = this.page.getByLabel(
-      new RegExp(`^\\s*${category}\\s*$`, "i")
-    );
-    await categoryLocator.scrollIntoViewIfNeeded();
-    await categoryLocator.check({ force: true });
+  async clickCategory(category: Category): Promise<void> {
+    const checkbox = this.page.getByRole("checkbox", {
+      name: new RegExp(`^\\s*${category}\\s*$`, "i"),
+    });
+    await checkbox.scrollIntoViewIfNeeded();
+    await checkbox.check();
   }
 }

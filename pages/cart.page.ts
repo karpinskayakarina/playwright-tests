@@ -8,9 +8,7 @@ export class CartPage {
   }
 
   async expectProductTitle(title: string) {
-    await expect(this.page.locator('[data-test="product-title"]')).toHaveText(
-      title
-    );
+    await expect(this.page.getByTestId("product-title")).toHaveText(title);
   }
 
   async expectProceedToCheckoutVisible() {

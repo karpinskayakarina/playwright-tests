@@ -26,6 +26,7 @@ export default [
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-floating-promises": "error",
+      "playwright/no-conditional-in-test": "off",
     },
   },
 ];

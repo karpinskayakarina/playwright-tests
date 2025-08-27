@@ -29,21 +29,28 @@ export default defineConfig({
     baseURL: "https://practicesoftwaretesting.com",
 
     testIdAttribute: "data-test",
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
+    storageState: { cookies: [], origins: [] },
+    contextOptions: { serviceWorkers: "block" },
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
   },
 
   /* Configure projects for major browsers */
   projects: [
+    { name: "perform-login", testMatch: /auth-setup\.spec\.ts/ },
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+      dependencies: ["perform-login"],
     },
 
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
+      dependencies: ["perform-login"],
     },
 
     {
