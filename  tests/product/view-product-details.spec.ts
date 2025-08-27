@@ -13,7 +13,7 @@ test.describe("Product details", () => {
     await product.expectName("Combination Pliers");
     await product.expectPrice("14.15");
 
-    await product.addToCart();
+    await product.addToCartAndCheckMessage();
     await product.addToFavorites();
 
     await product.header.expectCartCount("1");
