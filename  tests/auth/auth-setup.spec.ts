@@ -3,6 +3,11 @@ import { LoginPage } from "@pages/login.page";
 import { VALID_USER } from "../fixtures/credentials";
 import path from "path";
 
+test.skip(
+  !!process.env.CI,
+  "Test is skipped in CI due to the Cloudflare protection."
+);
+
 const authFile = path.join(__dirname, "../playwright/.auth/user.json");
 
 test("Verify login with valid credentials", async ({ page }) => {
