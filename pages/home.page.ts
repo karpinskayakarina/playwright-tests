@@ -1,11 +1,32 @@
-import { Category } from " tests/enums/product.categories";
+import { Category } from "tests/enums/product.categories";
 import { expect, Locator, Page } from "@playwright/test";
 
 export class HomePage {
   private readonly titles: Locator;
+  private get prices(): Locator {
+    return this.page.getByTestId("product-price").locator(":visible");
+  }
 
   constructor(private readonly page: Page) {
     this.titles = page.getByTestId("product-name");
+  }
+
+  async namesSignature(): Promise<string> {
+    const texts = await this.titles.allInnerTexts();
+    return texts.map((s) => s.trim()).join("|");
+  }
+
+  private async nextAnimationFrame(): Promise<void> {
+    await this.page.evaluate(
+      () => new Promise<void>((r) => requestAnimationFrame(() => r()))
+    );
+  }
+
+  private async isNamesStableOnce(): Promise<boolean> {
+    const a = await this.namesSignature();
+    await this.nextAnimationFrame();
+    const b = await this.namesSignature();
+    return a === b;
   }
 
   async goto(): Promise<void> {
@@ -17,29 +38,24 @@ export class HomePage {
   }
 
   async selectSort(label: string): Promise<void> {
-    const names: Locator = this.titles;
-
-    const before = (await names.allTextContents()).join("|");
-
     await this.page.getByTestId("sort").selectOption({ label });
+  }
 
-    await expect
-      .poll(async () => (await names.allTextContents()).join("|"))
-      .not.toBe(before);
+  async waitUntilNamesChange(prevSignature: string): Promise<void> {
+    await expect.poll(() => this.namesSignature()).not.toBe(prevSignature);
+  }
 
-    await expect
-      .poll(async () => {
-        const a = (await names.allTextContents()).join("|");
-        await this.page.waitForTimeout(50);
-        const b = (await names.allTextContents()).join("|");
-        return a === b;
-      })
-      .toBe(true);
+  async waitUntilNamesStable(): Promise<void> {
+    await expect.poll(() => this.isNamesStableOnce()).toBe(true);
   }
 
   async getProductNames(): Promise<string[]> {
-    const texts = await this.titles.allTextContents();
+    const texts = await this.titles.allInnerTexts();
     return texts.map((s) => s.trim());
+  }
+
+  async getProductPriceTexts(): Promise<string[]> {
+    return this.prices.allInnerTexts();
   }
 
   async clickCategory(category: Category): Promise<void> {
@@ -48,5 +64,12 @@ export class HomePage {
     });
     await checkbox.scrollIntoViewIfNeeded();
     await checkbox.check();
+  }
+
+  async areProductsFilteredBy(category: Category): Promise<boolean> {
+    const texts = (await this.getProductNames()).map((t) => t.toLowerCase());
+    return (
+      texts.length > 0 && texts.every((t) => t.includes(category.toLowerCase()))
+    );
   }
 }

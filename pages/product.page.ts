@@ -1,54 +1,48 @@
-import { HeaderFragment } from " tests/fragments/header.fragments";
-import { Page, expect } from "@playwright/test";
+import { HeaderFragment } from "tests/fragments/header.fragments";
+import { Locator, Page } from "@playwright/test";
 
 export class ProductPage {
-  private readonly selectors = {
-    addToCart: '[data-test="add-to-cart"]',
-    cartQuantity: '[data-test="cart-quantity"]',
-    cartIcon: '[data-test="nav-cart"]',
-  } as const;
-
-  constructor(private page: Page) {
-    this.header = new HeaderFragment(page);
-  }
   readonly header: HeaderFragment;
 
-  async expectName(name: string) {
-    await expect(this.page.getByTestId("product-name")).toHaveText(name);
+  constructor(private readonly page: Page) {
+    this.header = new HeaderFragment(page);
   }
 
-  async expectPrice(price: string | RegExp) {
-    await expect(this.page.getByTestId("unit-price")).toContainText(price);
+  get name(): Locator {
+    return this.page.getByTestId("product-name");
   }
 
-  async addToCartAndCheckMessage() {
-    await this.page.locator(this.selectors.addToCart).click();
-
-    const alert = this.page.getByText("Product added to shopping cart.");
-    await expect(alert).toBeVisible();
-    await expect(alert).toHaveText("Product added to shopping cart.");
-    await expect(alert).toBeHidden({ timeout: 8000 });
+  get unitPrice(): Locator {
+    return this.page.getByTestId("unit-price");
   }
 
-  async expectCartCount(count: string) {
-    await expect(this.page.locator(this.selectors.cartQuantity)).toHaveText(
-      count
+  get addToast(): Locator {
+    return this.page.getByText("Product added to shopping cart.");
+  }
+
+  get addToFavoritesButton(): Locator {
+    return this.page.getByRole("button", { name: /add to favourites/i });
+  }
+
+  get favoritesUnauthorizedToast(): Locator {
+    return this.page.getByText(
+      "Unauthorized, can not add product to your favorite list."
     );
   }
 
-  async openCart() {
-    await this.page.locator(this.selectors.cartIcon).click();
+  get cartQuantity(): Locator {
+    return this.page.getByTestId("cart-quantity");
   }
 
-  async addToFavorites() {
-    await expect(
-      this.page.getByRole("button", { name: "Add to favourites" })
-    ).toBeVisible();
+  async addToCart(): Promise<void> {
+    await this.page.getByTestId("add-to-cart").click();
+  }
+
+  async openCart(): Promise<void> {
+    await this.page.getByTestId("nav-cart").click();
+  }
+
+  async clickAddToFavorites(): Promise<void> {
     await this.page.getByTestId("add-to-favorites").click();
-    await expect(
-      this.page.getByText(
-        "Unauthorized, can not add product to your favorite list."
-      )
-    ).toBeVisible();
   }
 }
