@@ -23,6 +23,7 @@ test.describe("Sort by name", () => {
 
       const actual = await home.getProductNames();
       const expected = sortByName(actual, c.order);
+
       expect(actual).toEqual(expected);
     });
   }
