@@ -1,16 +1,73 @@
-import { Page } from "@playwright/test";
+import { Category } from "tests/enums/product.categories";
+import { expect, Locator, Page } from "@playwright/test";
 
 export class HomePage {
-  constructor(private page: Page) {}
+  private readonly titles: Locator;
+  private get prices(): Locator {
+    return this.page.getByTestId("product-price").locator(":visible");
+  }
 
-  async goto() {
+  constructor(private readonly page: Page) {
+    this.titles = page.getByTestId("product-name");
+  }
+
+  async namesSignature(): Promise<string> {
+    const texts = await this.titles.allInnerTexts();
+    return texts.map((s) => s.trim()).join("|");
+  }
+
+  private async isNamesStableOnce(): Promise<boolean> {
+    const a = await this.namesSignature();
+
+    await this.page.waitForLoadState("networkidle");
+
+    const b = await this.namesSignature();
+    return a === b;
+  }
+
+  async waitUntilNamesStable(): Promise<void> {
+    await expect.poll(() => this.isNamesStableOnce()).toBe(true);
+  }
+
+  async goto(): Promise<void> {
     await this.page.goto("/");
   }
 
-  async openProductByName(name: string) {
-    await this.page
-      .getByTestId("product-name")
-      .filter({ hasText: name })
-      .click();
+  async openProductByName(name: string): Promise<void> {
+    await this.titles.filter({ hasText: name }).click();
+  }
+
+  async selectSort(label: string): Promise<void> {
+    await this.page.getByTestId("sort").selectOption({ label });
+  }
+
+  async waitUntilNamesChange(prevSignature: string): Promise<void> {
+    await expect
+      .poll(async () => this.namesSignature())
+      .not.toBe(prevSignature);
+  }
+
+  async getProductNames(): Promise<string[]> {
+    await expect(this.titles.first()).toBeVisible();
+    return this.titles.allTextContents();
+  }
+
+  async getProductPriceTexts(): Promise<string[]> {
+    return this.prices.allInnerTexts();
+  }
+
+  async clickCategory(category: Category): Promise<void> {
+    const checkbox = this.page.getByRole("checkbox", {
+      name: new RegExp(`^\\s*${category}\\s*$`, "i"),
+    });
+    await checkbox.scrollIntoViewIfNeeded();
+    await checkbox.check();
+  }
+
+  async areProductsFilteredBy(category: Category): Promise<boolean> {
+    const texts = (await this.getProductNames()).map((t) => t.toLowerCase());
+    return (
+      texts.length > 0 && texts.every((t) => t.includes(category.toLowerCase()))
+    );
   }
 }
