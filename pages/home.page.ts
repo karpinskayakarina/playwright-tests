@@ -16,17 +16,17 @@ export class HomePage {
     return texts.map((s) => s.trim()).join("|");
   }
 
-  private async nextAnimationFrame(): Promise<void> {
-    await this.page.evaluate(
-      () => new Promise<void>((r) => requestAnimationFrame(() => r()))
-    );
-  }
-
   private async isNamesStableOnce(): Promise<boolean> {
     const a = await this.namesSignature();
-    await this.nextAnimationFrame();
+
+    await this.page.waitForLoadState("networkidle");
+
     const b = await this.namesSignature();
     return a === b;
+  }
+
+  async waitUntilNamesStable(): Promise<void> {
+    await expect.poll(() => this.isNamesStableOnce()).toBe(true);
   }
 
   async goto(): Promise<void> {
@@ -45,10 +45,6 @@ export class HomePage {
     await expect
       .poll(async () => this.namesSignature())
       .not.toBe(prevSignature);
-  }
-
-  async waitUntilNamesStable(): Promise<void> {
-    await expect.poll(async () => this.isNamesStableOnce()).toBe(true);
   }
 
   async getProductNames(): Promise<string[]> {
