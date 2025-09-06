@@ -42,16 +42,18 @@ export class HomePage {
   }
 
   async waitUntilNamesChange(prevSignature: string): Promise<void> {
-    await expect.poll(() => this.namesSignature()).not.toBe(prevSignature);
+    await expect
+      .poll(async () => this.namesSignature())
+      .not.toBe(prevSignature);
   }
 
   async waitUntilNamesStable(): Promise<void> {
-    await expect.poll(() => this.isNamesStableOnce()).toBe(true);
+    await expect.poll(async () => this.isNamesStableOnce()).toBe(true);
   }
 
   async getProductNames(): Promise<string[]> {
-    const texts = await this.titles.allInnerTexts();
-    return texts.map((s) => s.trim());
+    await expect(this.titles.first()).toBeVisible();
+    return this.titles.allTextContents();
   }
 
   async getProductPriceTexts(): Promise<string[]> {
