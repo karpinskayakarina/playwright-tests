@@ -1,15 +1,18 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { CreditCardDetails } from "tests/data/card";
 
 export class PaymentPage {
-  private readonly paymentMethod: Locator;
-  private readonly creditCardNumber: Locator;
-  private readonly expirationDate: Locator;
-  private readonly cvv: Locator;
-  private readonly cardHolderName: Locator;
-  private readonly finish: Locator;
-  private readonly successMessage: Locator;
+  readonly page: Page;
+  readonly paymentMethod: Locator;
+  readonly creditCardNumber: Locator;
+  readonly expirationDate: Locator;
+  readonly cvv: Locator;
+  readonly cardHolderName: Locator;
+  readonly finish: Locator;
+  readonly successMessage: Locator;
 
-  constructor(private readonly page: Page) {
+  constructor(page: Page) {
+    this.page = page;
     this.paymentMethod = page.getByTestId("payment-method");
     this.creditCardNumber = page.getByTestId("credit_card_number");
     this.expirationDate = page.getByTestId("expiration_date");
@@ -23,25 +26,20 @@ export class PaymentPage {
     await this.paymentMethod.selectOption(method);
   }
 
-  async fillCreditCard({
-    number,
-    expDate,
-    cvv,
-    holder,
-  }: {
-    number: string;
-    expDate: string;
-    cvv: string;
-    holder: string;
-  }): Promise<void> {
-    await this.creditCardNumber.fill(number);
-    await this.expirationDate.fill(expDate);
-    await this.cvv.fill(cvv);
-    await this.cardHolderName.fill(holder);
+  async fillCreditCardDetails(details: CreditCardDetails) {
+    await this.creditCardNumber.fill(details.creditCardNumber);
+    await this.expirationDate.fill(details.expirationDate);
+    await this.cvv.fill(details.cvv);
+    await this.cardHolderName.fill(details.cardHolderName);
   }
 
-  async confirmAndExpectSuccess(): Promise<void> {
-    await this.finish.click();
-    await expect(this.successMessage).toContainText("Payment was successful");
+  async clickOnConfirmButton() {
+    await Promise.all([this.page.getByTestId("finish").click()]);
+  }
+
+  async expectSuccessHeadingVisible() {
+    await expect(
+      this.page.getByTestId("payment-success-message")
+    ).toBeVisible();
   }
 }

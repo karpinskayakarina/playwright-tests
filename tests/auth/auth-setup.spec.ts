@@ -14,7 +14,7 @@ test("Verify login with valid credentials", async ({ page }) => {
   const login = new LoginPage(page);
 
   await login.goto();
-  await login.login(VALID_USER.email, VALID_USER.password);
+  await login.performSuccessLogin(VALID_USER.email, VALID_USER.password);
 
   await page.context().storageState({ path: authFile });
 });

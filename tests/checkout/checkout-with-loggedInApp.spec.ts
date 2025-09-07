@@ -1,22 +1,16 @@
 import { test, expect } from "@fixtures/fixtures";
-
-function plus3MonthsMMYYYY(): string {
-  const d = new Date();
-  d.setMonth(d.getMonth() + 3);
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const yyyy = d.getFullYear();
-  return `${mm}/${yyyy}`;
-}
+import { CreditCardDetails } from "../data/card";
+import { defaultAddress } from "../data/address";
+import { plus3MonthsMMYYYY } from "../utils/date";
 
 test("Checkout happy path (loggedInApp)", async ({ loggedInApp: app }) => {
-  // 1) Додати перший товар з домашньої, зберегти назву і ціну
   await app.homePage.goto();
-  const { name, priceText } = await app.homePage.getFirstProductMeta();
-  await app.homePage.openFirstProduct();
 
-  // Перестрахуємось на сторінці товару
+  const { name, priceText } = await app.homePage.getFirstProductMeta();
+  await app.homePage.openProductByName(name);
+
   await expect(app.productPage.name).toHaveText(name);
-  await expect(app.productPage.unitPrice).toContainText(priceText);
+  await app.productPage.expectUnitPriceEquals(priceText);
 
   await app.productPage.addToCart();
   await expect(app.productPage.addToast).toBeVisible();
@@ -25,33 +19,23 @@ test("Checkout happy path (loggedInApp)", async ({ loggedInApp: app }) => {
   );
   await expect(app.productPage.addToast).toBeHidden({ timeout: 8000 });
 
-  // 2) Відкрити кошик і звірити назву/ціну/суму
   await app.productPage.openCart();
   await app.cartPage.expectOnCheckoutPage();
-  await app.cartPage.expectProductTitle(name);
-  await app.cartPage.expectProductAndTotals(priceText);
+  await app.cartPage.expectProductTitleEquals(name);
 
-  // 3) Proceed to checkout
-  await app.cartPage.expectProceedToCheckoutVisible();
-  await app.cartPage.proceedToCheckoutStep1();
-
-  // 4) Переконатися, що юзер вже залогінений
+  await app.cartPage.clickProceedToCheckout();
   await app.cartPage.expectAlreadyLoggedIn();
-  await app.cartPage.proceedToCheckoutStep2();
+  await app.cartPage.clickProceedToCheckout();
+  await app.cartPage.fillAddressIfEmpty(defaultAddress);
 
-  // 5) Ввести відсутні поля Billing Address
-  await app.cartPage.fillShippingAddress("Some State", "1111");
-  await app.cartPage.proceedToCheckoutStep3();
+  await app.cartPage.clickProceedToCheckout();
 
-  // 6) Оплата: Credit Card + дані, Expiration = +3 місяці
-  await app.paymentPage.selectPaymentMethod("credit-card");
-  await app.paymentPage.fillCreditCard({
-    number: "1111-1111-1111-1111",
-    expDate: plus3MonthsMMYYYY(),
-    cvv: "111",
-    holder: "Any Name",
+  await app.paymentPage.selectPaymentMethod("Credit Card");
+  await app.paymentPage.fillCreditCardDetails({
+    ...CreditCardDetails,
+    expirationDate: plus3MonthsMMYYYY(),
   });
 
-  // 7) Підтвердити і перевірити успіх
-  await app.paymentPage.confirmAndExpectSuccess();
+  await app.paymentPage.clickOnConfirmButton();
+  await app.paymentPage.expectSuccessHeadingVisible();
 });

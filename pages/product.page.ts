@@ -1,5 +1,5 @@
 import { HeaderFragment } from "tests/fragments/header.fragments";
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 
 export class ProductPage {
   readonly header: HeaderFragment;
@@ -44,5 +44,12 @@ export class ProductPage {
 
   async clickAddToFavorites(): Promise<void> {
     await this.page.getByTestId("add-to-favorites").click();
+  }
+
+  async expectUnitPriceEquals(expectedWithCurrency: string) {
+    const numeric = expectedWithCurrency.replace(/[^\d.,]/g, "");
+    await expect(this.unitPrice).toHaveText(
+      new RegExp(`^\\s*\\$?\\s*${numeric}\\s*$`)
+    );
   }
 }
