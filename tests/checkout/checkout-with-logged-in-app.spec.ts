@@ -24,7 +24,7 @@ test("Checkout happy path (loggedInApp)", async ({ loggedInApp: app }) => {
   await app.cartPage.expectProductTitleEquals(name);
 
   await app.cartPage.clickProceedToCheckout();
-  await app.cartPage.expectAlreadyLoggedIn();
+  await app.cartPage.expectAlreadyLoggedIn("Jane Doe");
   await app.cartPage.clickProceedToCheckout();
   await app.cartPage.fillAddressIfEmpty(defaultAddress);
 

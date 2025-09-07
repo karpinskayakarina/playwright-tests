@@ -21,10 +21,10 @@ export class CartPage {
     ).toBeVisible();
   }
 
-  async expectAlreadyLoggedIn() {
+  async expectAlreadyLoggedIn(username: string) {
     await expect(
       this.page.getByText(
-        "Hello Jane Doe, you are already logged in. You can proceed to checkout."
+        `Hello ${username}, you are already logged in. You can proceed to checkout.`
       )
     ).toBeVisible();
   }
@@ -46,32 +46,17 @@ export class CartPage {
     city?: string;
     country?: string;
     postalCode?: string;
-  }) {
-    if (street) {
-      const streetInput = this.page.getByTestId("street");
-      if ((await streetInput.inputValue()).trim() === "") {
-        await streetInput.fill(street);
-      }
-    }
+  }): Promise<void> {
+    const fields: Record<string, string | undefined> = {
+      street,
+      city,
+      country,
+      postal_code: postalCode,
+    };
 
-    if (city) {
-      const cityInput = this.page.getByTestId("city");
-      if ((await cityInput.inputValue()).trim() === "") {
-        await cityInput.fill(city);
-      }
-    }
-
-    if (country) {
-      const countryInput = this.page.getByTestId("country");
-      if ((await countryInput.inputValue()).trim() === "") {
-        await countryInput.fill(country);
-      }
-    }
-
-    if (postalCode) {
-      const postalInput = this.page.getByTestId("postal_code");
-      if ((await postalInput.inputValue()).trim() === "") {
-        await postalInput.fill(postalCode);
+    for (const [testId, value] of Object.entries(fields)) {
+      if (value) {
+        await this.page.getByTestId(testId).fill(value);
       }
     }
   }
