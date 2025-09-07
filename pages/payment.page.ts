@@ -33,7 +33,7 @@ export class PaymentPage {
     await this.cardHolderName.fill(details.cardHolderName);
   }
 
-  async clickOnConfirm() {
+  async clickOnConfirmButton() {
     await Promise.all([this.page.getByTestId("finish").click()]);
   }
 

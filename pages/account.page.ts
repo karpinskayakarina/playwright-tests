@@ -3,8 +3,14 @@ import { Page, expect } from "@playwright/test";
 export class AccountPage {
   constructor(private page: Page) {}
 
+  private heading = this.page.getByRole("heading", { name: /my account/i });
+
   async goto() {
     await this.page.goto("/account");
+  }
+
+  async expectLoaded() {
+    await expect(this.heading).toBeVisible();
   }
 
   async assertBasics() {

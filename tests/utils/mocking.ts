@@ -1,16 +1,15 @@
 import { Route } from "@playwright/test";
+import { API_BASE_URL } from "../config/api.config";
 
-type ProductListResponse = {
-  data: Array<{ id: string; name: string; price: number }>;
-};
+type Product = { id: string; name: string; price: number };
+type ProductListResponse = { data: Product[] };
 
 async function fetchPageProducts(
   route: Route,
   pageNumber: number
 ): Promise<ProductListResponse> {
-  const apiUrl = process.env.API_URL!;
   const response = await route.fetch({
-    url: `${apiUrl}/products?page=${pageNumber}`,
+    url: `${API_BASE_URL}/products?page=${pageNumber}`,
   });
   return (await response.json()) as ProductListResponse;
 }
@@ -21,20 +20,17 @@ export async function mockProductsResponse(route: Route) {
 
   let combinedData = json.data;
 
-  const secondPageData = await fetchPageProducts(route, 2);
-  combinedData = combinedData.concat(secondPageData.data);
+  const secondPage = await fetchPageProducts(route, 2);
+  combinedData = combinedData.concat(secondPage.data);
 
-  const thirdPageData = await fetchPageProducts(route, 3);
-  combinedData = combinedData.concat(thirdPageData.data);
+  const thirdPage = await fetchPageProducts(route, 3);
+  combinedData = combinedData.concat(thirdPage.data);
 
   combinedData = combinedData.slice(0, 20);
 
   await route.fulfill({
-    status: response.status(),
+    status: 200,
     contentType: "application/json",
-    body: JSON.stringify({
-      ...json,
-      data: combinedData,
-    }),
+    body: JSON.stringify({ data: combinedData }),
   });
 }
