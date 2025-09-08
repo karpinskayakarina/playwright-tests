@@ -1,6 +1,6 @@
 import { loggedInTestApi as test, expect } from "@fixtures/fixtures";
 import { CreditCardDetails } from "../data/card";
-import { defaultAddress } from "../data/address";
+import { makeAddress } from "../data/address";
 import { plus3MonthsMMYYYY } from "../utils/date";
 
 test("Checkout happy path (loggedInApp)", async ({ loggedInViaApi: app }) => {
@@ -26,7 +26,7 @@ test("Checkout happy path (loggedInApp)", async ({ loggedInViaApi: app }) => {
   await app.cartPage.clickProceedToCheckout();
   await app.cartPage.expectAlreadyLoggedIn("Jane Doe");
   await app.cartPage.clickProceedToCheckout();
-  await app.cartPage.fillAddressIfEmpty(defaultAddress);
+  await app.cartPage.fillAddress(makeAddress());
 
   await app.cartPage.clickProceedToCheckout();
 

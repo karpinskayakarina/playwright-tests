@@ -1,37 +1,63 @@
 import { test as base, expect, request } from "@playwright/test";
-import { AllPages } from "@pages/allPages";
 import { VALID_USER } from "./credentials";
+import { AllPages } from "@pages/allPages";
 import { API_BASE_URL } from "tests/config/api.config";
 
-type Fixtures = {
+type App = {
   app: AllPages;
+};
+
+type LoggedInApp = {
   loggedInApp: AllPages;
 };
 
 type LoginResponse = {
-  accessToken: string;
-  // якщо бекенд повертає ще refreshToken / user — додай їх сюди
+  access_token: string;
 };
 
-export const test = base.extend<Fixtures>({
+type LoggedInViaApi = {
+  loggedInViaApi: AllPages;
+};
+
+export const test = base.extend<App>({
   app: async ({ page }, use) => {
     const app = new AllPages(page);
     await use(app);
   },
+});
 
-  loggedInApp: async ({ page }, use) => {
-    const api = await request.newContext({ baseURL: API_BASE_URL });
+export const loggedInTest = base.extend<LoggedInApp>({
+  loggedInApp: async ({ browser }, use) => {
+    const context = await browser.newContext({
+      storageState: ".auth/user.json",
+    });
+    const page = await context.newPage();
+    const app = new AllPages(page);
+    await use(app);
+    await context.close();
+  },
+});
+
+export const loggedInTestApi = base.extend<LoggedInViaApi>({
+  loggedInViaApi: async ({ page }, use) => {
+    const api = await request.newContext({
+      baseURL: API_BASE_URL,
+      extraHTTPHeaders: { Accept: "application/json" },
+    });
 
     const resp = await api.post("/users/login", {
       data: { email: VALID_USER.email, password: VALID_USER.password },
     });
-    expect(resp.ok()).toBeTruthy();
 
-    const { accessToken } = (await resp.json()) as LoginResponse; // ✅ типізація
+    expect(
+      resp.ok(),
+      `Login failed: ${resp.status()} ${await resp.text()}`
+    ).toBeTruthy();
+    const { access_token } = (await resp.json()) as LoginResponse;
 
     await page.addInitScript((token: string) => {
-      localStorage.setItem("token", token);
-    }, accessToken);
+      localStorage.setItem("auth-token", token);
+    }, access_token);
 
     const app = new AllPages(page);
     await use(app);

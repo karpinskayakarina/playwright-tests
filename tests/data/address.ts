@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+
 export type Address = {
   street: string;
   city: string;
@@ -5,9 +7,14 @@ export type Address = {
   postalCode: string;
 };
 
-export const defaultAddress: Address = {
-  street: "Main Street 1",
-  city: "Kyiv",
-  country: "Ukraine",
-  postalCode: "01001",
-};
+export function makeAddress(partial?: Partial<Address>): Address {
+  return {
+    street: faker.location.streetAddress(),
+    city: faker.location.city(),
+    country: faker.location.country(),
+    postalCode: faker.location.zipCode(),
+    ...partial,
+  };
+}
+
+export const defaultAddress: Address = makeAddress();
