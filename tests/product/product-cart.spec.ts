@@ -26,6 +26,6 @@ test("Verify user can add product to cart", async ({ page }) => {
   await product.openCart();
 
   await cart.expectOnCheckoutPage();
-  await cart.expectProductTitle(P.name);
+  await cart.expectProductTitleEquals(P.name);
   await cart.expectProceedToCheckoutVisible();
 });

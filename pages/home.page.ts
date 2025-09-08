@@ -11,6 +11,10 @@ export class HomePage {
     this.titles = page.getByTestId("product-name");
   }
 
+  async goto(): Promise<void> {
+    await this.page.goto("/");
+  }
+
   async namesSignature(): Promise<string> {
     const texts = await this.titles.allInnerTexts();
     return texts.map((s) => s.trim()).join("|");
@@ -29,8 +33,18 @@ export class HomePage {
     await expect.poll(() => this.isNamesStableOnce()).toBe(true);
   }
 
-  async goto(): Promise<void> {
-    await this.page.goto("/");
+  async getFirstProductMeta(): Promise<{ name: string; priceText: string }> {
+    const name = (
+      await this.page.getByTestId("product-name").first().innerText()
+    ).trim();
+    const priceText = (
+      await this.page.getByTestId("product-price").first().innerText()
+    ).trim();
+    return { name, priceText };
+  }
+
+  async openFirstProduct(): Promise<void> {
+    await this.page.getByTestId("product-name").first().click();
   }
 
   async openProductByName(name: string): Promise<void> {
