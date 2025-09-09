@@ -84,4 +84,8 @@ export class HomePage {
       texts.length > 0 && texts.every((t) => t.includes(category.toLowerCase()))
     );
   }
+
+  get productNames() {
+    return this.page.getByTestId("product-name");
+  }
 }

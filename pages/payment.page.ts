@@ -34,7 +34,7 @@ export class PaymentPage {
   }
 
   async clickOnConfirmButton() {
-    await Promise.all([this.page.getByTestId("finish").click()]);
+    await this.page.getByTestId("finish").click();
   }
 
   async expectSuccessHeadingVisible() {
