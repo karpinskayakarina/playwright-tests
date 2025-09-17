@@ -8,23 +8,29 @@ const cases: ReadonlyArray<{ label: SortLabel; order: SortOrder }> = [
   { label: SortLabel.DescendingByName, order: SortOrder.Descending },
 ];
 
-test.describe("Sort by name", () => {
-  for (const c of cases) {
-    test(`sort by name ${c.order}`, async ({ page }) => {
-      const home = new HomePage(page);
+test.describe(
+  "Sort by name",
+  {
+    tag: "@regression",
+  },
+  () => {
+    for (const c of cases) {
+      test(`sort by name ${c.order}`, async ({ page }) => {
+        const home = new HomePage(page);
 
-      await home.goto();
+        await home.goto();
 
-      const before = await home.namesSignature();
-      await home.selectSort(c.label);
+        const before = await home.namesSignature();
+        await home.selectSort(c.label);
 
-      await home.waitUntilNamesChange(before);
-      await home.waitUntilNamesStable();
+        await home.waitUntilNamesChange(before);
+        await home.waitUntilNamesStable();
 
-      const actual = await home.getProductNames();
-      const expected = sortByName(actual, c.order);
+        const actual = await home.getProductNames();
+        const expected = sortByName(actual, c.order);
 
-      expect(actual).toEqual(expected);
-    });
+        expect(actual).toEqual(expected);
+      });
+    }
   }
-});
+);

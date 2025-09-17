@@ -8,22 +8,28 @@ const cases: ReadonlyArray<{ label: SortLabel; order: SortOrder }> = [
   { label: SortLabel.DescendingByPrice, order: SortOrder.Descending },
 ];
 
-test.describe("Sort by price", () => {
-  for (const c of cases) {
-    test(`sort by price ${c.order}`, async ({ page }) => {
-      const home = new HomePage(page);
+test.describe(
+  "Sort by price",
+  {
+    tag: "@regression",
+  },
+  () => {
+    for (const c of cases) {
+      test(`sort by price ${c.order}`, async ({ page }) => {
+        const home = new HomePage(page);
 
-      await home.goto();
+        await home.goto();
 
-      const before = await home.namesSignature();
-      await home.selectSort(c.label);
-      await home.waitUntilNamesChange(before);
-      await home.waitUntilNamesStable();
+        const before = await home.namesSignature();
+        await home.selectSort(c.label);
+        await home.waitUntilNamesChange(before);
+        await home.waitUntilNamesStable();
 
-      const priceTexts = await home.getProductPriceTexts();
-      const prices = priceTexts.map(parsePrice);
-      const expected = sortPrices(prices, c.order);
-      expect(prices).toEqual(expected);
-    });
+        const priceTexts = await home.getProductPriceTexts();
+        const prices = priceTexts.map(parsePrice);
+        const expected = sortPrices(prices, c.order);
+        expect(prices).toEqual(expected);
+      });
+    }
   }
-});
+);

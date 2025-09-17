@@ -1,11 +1,12 @@
-name: Playwright Tests
+name: Playwright Smoke Tests
 on:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+
 jobs:
-  test:
+  smoke:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -15,12 +16,16 @@ jobs:
           node-version: lts/*
       - name: Install dependencies
         run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: BASE_URL='https://google.com' npx playwright test
+      - name: Install Playwright Chrome
+        run: npx playwright install chromium
+      - name: Run Playwright smoke tests
+        run: npx playwright test --grep "@smoke"
         env:
-         BASE_URL: 'https://google.com
+          BASE_URL: ${{ secrets.BASE_URL }}
+          API_URL: ${{ secrets.API_URL }}
+          EMAIL: ${{ secrets.EMAIL }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          NAME: ${{ secrets.NAME }}
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

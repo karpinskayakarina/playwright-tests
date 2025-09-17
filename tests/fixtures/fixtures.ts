@@ -1,5 +1,4 @@
 import { test as base, expect, request } from "@playwright/test";
-import { VALID_USER } from "./credentials";
 import { AllPages } from "@pages/allPages";
 import { API_BASE_URL } from "tests/config/api.config";
 
@@ -46,7 +45,7 @@ export const loggedInTestApi = base.extend<LoggedInViaApi>({
     });
 
     const resp = await api.post("/users/login", {
-      data: { email: VALID_USER.email, password: VALID_USER.password },
+      data: { email: process.env.EMAIL, password: process.env.PASSWORD },
     });
 
     expect(

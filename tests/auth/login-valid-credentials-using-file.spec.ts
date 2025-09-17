@@ -11,10 +11,16 @@ const authFile = path.join(__dirname, "../playwright/.auth/user.json");
 
 test.use({ storageState: authFile });
 
-test("Verify login with valid credentials", async ({ page }) => {
-  const account = new AccountPage(page);
+test(
+  "Verify login with valid credentials",
+  {
+    tag: "@smoke",
+  },
+  async ({ page }) => {
+    const account = new AccountPage(page);
 
-  await account.goto();
+    await account.goto();
 
-  await account.assertBasics();
-});
+    await account.assertBasics();
+  }
+);
