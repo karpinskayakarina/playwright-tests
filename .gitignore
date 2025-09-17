@@ -6,3 +6,5 @@ node_modules/
 /playwright/.cache/
 tests/playwright/.auth/
 .env
+.auth/user.json
+results.json

@@ -1,0 +1,823 @@
+{
+  "config": {
+    "configFile": "/Users/karinakarpinskaya/playwright-tests/playwright.config.ts",
+    "rootDir": "/Users/karinakarpinskaya/playwright-tests/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 5
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "open": "never"
+        }
+      ],
+      [
+        "dot",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "reports/report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/karinakarpinskaya/playwright-tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "perform-login",
+        "name": "perform-login",
+        "testDir": "/Users/karinakarpinskaya/playwright-tests/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/auth-setup\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/karinakarpinskaya/playwright-tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/karinakarpinskaya/playwright-tests/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/karinakarpinskaya/playwright-tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "chromium-smoke",
+        "name": "chromium-smoke",
+        "testDir": "/Users/karinakarpinskaya/playwright-tests/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/karinakarpinskaya/playwright-tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "chromium-regression",
+        "name": "chromium-regression",
+        "testDir": "/Users/karinakarpinskaya/playwright-tests/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/karinakarpinskaya/playwright-tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/karinakarpinskaya/playwright-tests/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/karinakarpinskaya/playwright-tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/karinakarpinskaya/playwright-tests/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "auth/auth-setup.spec.ts",
+      "file": "auth/auth-setup.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Verify login with valid credentials",
+          "ok": true,
+          "tags": [
+            "smoke"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "perform-login",
+              "projectName": "perform-login",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1703,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Open login page",
+                      "duration": 896
+                    },
+                    {
+                      "title": "Sign in with valid credentials",
+                      "duration": 615
+                    },
+                    {
+                      "title": "Persist storage state",
+                      "duration": 4
+                    }
+                  ],
+                  "startTime": "2025-09-17T21:52:35.955Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3c3a42e57e13e4078306-0614723569fe9da70d57",
+          "file": "auth/auth-setup.spec.ts",
+          "line": 13,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "catalog/filter-by-category.spec.ts",
+      "file": "catalog/filter-by-category.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Filter products by Power Tools category (Sander)",
+          "ok": true,
+          "tags": [
+            "regression"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-regression",
+              "projectName": "chromium-regression",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2779,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Open home page",
+                      "duration": 1311
+                    },
+                    {
+                      "title": "Filter by Power Tools → Sander",
+                      "duration": 902
+                    },
+                    {
+                      "title": "Verify products are filtered by Sander",
+                      "duration": 402,
+                      "steps": [
+                        {
+                          "title": "Expect \"poll toBe\"",
+                          "duration": 401
+                        }
+                      ]
+                    }
+                  ],
+                  "startTime": "2025-09-17T21:52:38.195Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1273aba35eb2673fd24d-f4d6cefe70f6fbd9e1cf",
+          "file": "catalog/filter-by-category.spec.ts",
+          "line": 5,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "catalog/sort-by-name.spec.ts",
+      "file": "catalog/sort-by-name.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Sort by name",
+          "file": "catalog/sort-by-name.spec.ts",
+          "line": 11,
+          "column": 6,
+          "specs": [
+            {
+              "title": "sort by name asc",
+              "ok": true,
+              "tags": [
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-regression",
+                  "projectName": "chromium-regression",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4204,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Open home page",
+                          "duration": 2923
+                        },
+                        {
+                          "title": "Capture initial names signature",
+                          "duration": 13
+                        },
+                        {
+                          "title": "Apply sort: Name (A - Z)",
+                          "duration": 12
+                        },
+                        {
+                          "title": "Wait for names to change and stabilize",
+                          "duration": 1021,
+                          "steps": [
+                            {
+                              "title": "Expect \"poll not toBe\"",
+                              "duration": 360
+                            },
+                            {
+                              "title": "Expect \"poll toBe\"",
+                              "duration": 659
+                            }
+                          ]
+                        },
+                        {
+                          "title": "Get product names (actual)",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Compute expected order",
+                          "duration": 0
+                        },
+                        {
+                          "title": "Assert sorted order",
+                          "duration": 1
+                        }
+                      ],
+                      "startTime": "2025-09-17T21:52:38.208Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e5dba2907de9dcf91888-7651f2b081ee656a7085",
+              "file": "catalog/sort-by-name.spec.ts",
+              "line": 18,
+              "column": 11
+            },
+            {
+              "title": "sort by name desc",
+              "ok": true,
+              "tags": [
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-regression",
+                  "projectName": "chromium-regression",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2944,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Open home page",
+                          "duration": 1471
+                        },
+                        {
+                          "title": "Capture initial names signature",
+                          "duration": 29
+                        },
+                        {
+                          "title": "Apply sort: Name (Z - A)",
+                          "duration": 21
+                        },
+                        {
+                          "title": "Wait for names to change and stabilize",
+                          "duration": 1196,
+                          "steps": [
+                            {
+                              "title": "Expect \"poll not toBe\"",
+                              "duration": 110
+                            },
+                            {
+                              "title": "Expect \"poll toBe\"",
+                              "duration": 1080
+                            }
+                          ]
+                        },
+                        {
+                          "title": "Get product names (actual)",
+                          "duration": 4
+                        },
+                        {
+                          "title": "Compute expected order",
+                          "duration": 0
+                        },
+                        {
+                          "title": "Assert sorted order",
+                          "duration": 0
+                        }
+                      ],
+                      "startTime": "2025-09-17T21:52:38.209Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e5dba2907de9dcf91888-5270af1f8fb050f9a9d3",
+              "file": "catalog/sort-by-name.spec.ts",
+              "line": 18,
+              "column": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "catalog/sort-by-price.spec.ts",
+      "file": "catalog/sort-by-price.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Sort by price",
+          "file": "catalog/sort-by-price.spec.ts",
+          "line": 11,
+          "column": 6,
+          "specs": [
+            {
+              "title": "sort by price asc",
+              "ok": true,
+              "tags": [
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-regression",
+                  "projectName": "chromium-regression",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 4278,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Open home page",
+                          "duration": 1766
+                        },
+                        {
+                          "title": "Capture initial names signature",
+                          "duration": 14
+                        },
+                        {
+                          "title": "Apply sort: Price (Low - High)",
+                          "duration": 16
+                        },
+                        {
+                          "title": "Wait for list to change and stabilize",
+                          "duration": 2252,
+                          "steps": [
+                            {
+                              "title": "Expect \"poll not toBe\"",
+                              "duration": 105
+                            },
+                            {
+                              "title": "Expect \"poll toBe\"",
+                              "duration": 2145
+                            }
+                          ]
+                        },
+                        {
+                          "title": "Read product prices (raw text)",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Parse prices to numbers",
+                          "duration": 0
+                        },
+                        {
+                          "title": "Compute expected sorted prices",
+                          "duration": 0
+                        },
+                        {
+                          "title": "Assert prices are sorted as expected",
+                          "duration": 1
+                        }
+                      ],
+                      "startTime": "2025-09-17T21:52:38.202Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2b5b35b5579015f41897-cde2bac7c8d9649227d3",
+              "file": "catalog/sort-by-price.spec.ts",
+              "line": 18,
+              "column": 11
+            },
+            {
+              "title": "sort by price desc",
+              "ok": true,
+              "tags": [
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-regression",
+                  "projectName": "chromium-regression",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 3892,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Open home page",
+                          "duration": 1489
+                        },
+                        {
+                          "title": "Capture initial names signature",
+                          "duration": 25
+                        },
+                        {
+                          "title": "Apply sort: Price (High - Low)",
+                          "duration": 21
+                        },
+                        {
+                          "title": "Wait for list to change and stabilize",
+                          "duration": 2114,
+                          "steps": [
+                            {
+                              "title": "Expect \"poll not toBe\"",
+                              "duration": 364
+                            },
+                            {
+                              "title": "Expect \"poll toBe\"",
+                              "duration": 1748
+                            }
+                          ]
+                        },
+                        {
+                          "title": "Read product prices (raw text)",
+                          "duration": 4
+                        },
+                        {
+                          "title": "Parse prices to numbers",
+                          "duration": 0
+                        },
+                        {
+                          "title": "Compute expected sorted prices",
+                          "duration": 0
+                        },
+                        {
+                          "title": "Assert prices are sorted as expected",
+                          "duration": 1
+                        }
+                      ],
+                      "startTime": "2025-09-17T21:52:38.208Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2b5b35b5579015f41897-ececf46bb0d213253813",
+              "file": "catalog/sort-by-price.spec.ts",
+              "line": 18,
+              "column": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "mocking/products-mock.spec.ts",
+      "file": "mocking/products-mock.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Verify products quantity by mocking",
+          "ok": true,
+          "tags": [
+            "regression"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-regression",
+              "projectName": "chromium-regression",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1259,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Mock GET /products API",
+                      "duration": 1
+                    },
+                    {
+                      "title": "Open home page",
+                      "duration": 716
+                    },
+                    {
+                      "title": "Assert 20 products are rendered",
+                      "duration": 378
+                    }
+                  ],
+                  "startTime": "2025-09-17T21:52:41.816Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2bf45d098e7930ff861-2df00f488b2741730e3c",
+          "file": "mocking/products-mock.spec.ts",
+          "line": 5,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "product/product-cart.spec.ts",
+      "file": "product/product-cart.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Verify user can add product to cart",
+          "ok": true,
+          "tags": [
+            "regression"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-regression",
+              "projectName": "chromium-regression",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 9077,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Open home and navigate to product",
+                      "duration": 795
+                    },
+                    {
+                      "title": "Verify PDP name and price",
+                      "duration": 888
+                    },
+                    {
+                      "title": "Add to cart and verify toast",
+                      "duration": 6777
+                    },
+                    {
+                      "title": "Verify cart badge and open cart",
+                      "duration": 42
+                    },
+                    {
+                      "title": "Verify checkout page and product row",
+                      "duration": 462
+                    }
+                  ],
+                  "startTime": "2025-09-17T21:52:41.814Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b4368280e48360b42791-abd2044c2a3fce3d6431",
+          "file": "product/product-cart.spec.ts",
+          "line": 9,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "product/view-product-details.spec.ts",
+      "file": "product/view-product-details.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Product details",
+          "file": "product/view-product-details.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Verify price, add to cart and add to favorites",
+              "ok": true,
+              "tags": [
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-regression",
+                  "projectName": "chromium-regression",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 8571,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Open home and navigate to product",
+                          "duration": 849
+                        },
+                        {
+                          "title": "Verify PDP name and unit price",
+                          "duration": 362
+                        },
+                        {
+                          "title": "Add to cart and verify success toast",
+                          "duration": 6802
+                        },
+                        {
+                          "title": "Try add to favorites (unauthorized) and verify toast",
+                          "duration": 406
+                        },
+                        {
+                          "title": "Verify cart badge = 1",
+                          "duration": 5
+                        }
+                      ],
+                      "startTime": "2025-09-17T21:52:42.274Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddb46b867103c876f919-5cfbd109027a2126c7ef",
+              "file": "product/view-product-details.spec.ts",
+              "line": 9,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-09-17T21:52:35.076Z",
+    "duration": 15837.863000000001,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

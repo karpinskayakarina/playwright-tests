@@ -1,13 +1,14 @@
 import { test } from "@playwright/test";
 import { LoginPage } from "@pages/login.page";
 import path from "path";
+import fs from "fs";
 
 test.skip(
   !!process.env.CI,
   "Test is skipped in CI due to the Cloudflare protection."
 );
 
-const authFile = path.join(__dirname, "../playwright/.auth/user.json");
+const authFile = path.join(process.cwd(), "playwright/.auth/user.json");
 
 test(
   "Verify login with valid credentials",
@@ -18,9 +19,17 @@ test(
     const email = process.env.EMAIL!;
     const password = process.env.PASSWORD!;
 
-    await login.goto();
-    await login.performSuccessLogin(email, password);
+    await test.step("Open login page", async () => {
+      await login.goto();
+    });
 
-    await page.context().storageState({ path: authFile });
+    await test.step("Sign in with valid credentials", async () => {
+      await login.performSuccessLogin(email, password);
+    });
+
+    await test.step("Persist storage state", async () => {
+      fs.mkdirSync(path.dirname(authFile), { recursive: true });
+      await page.context().storageState({ path: authFile });
+    });
   }
 );

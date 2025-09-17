@@ -18,17 +18,41 @@ test.describe(
       test(`sort by price ${c.order}`, async ({ page }) => {
         const home = new HomePage(page);
 
-        await home.goto();
+        await test.step("Open home page", async () => {
+          await home.goto();
+        });
 
-        const before = await home.namesSignature();
-        await home.selectSort(c.label);
-        await home.waitUntilNamesChange(before);
-        await home.waitUntilNamesStable();
+        const before =
+          await test.step("Capture initial names signature", async () => {
+            return await home.namesSignature();
+          });
 
-        const priceTexts = await home.getProductPriceTexts();
-        const prices = priceTexts.map(parsePrice);
-        const expected = sortPrices(prices, c.order);
-        expect(prices).toEqual(expected);
+        await test.step(`Apply sort: ${c.label}`, async () => {
+          await home.selectSort(c.label);
+        });
+
+        await test.step("Wait for list to change and stabilize", async () => {
+          await home.waitUntilNamesChange(before);
+          await home.waitUntilNamesStable();
+        });
+
+        const priceTexts =
+          await test.step("Read product prices (raw text)", async () => {
+            return await home.getProductPriceTexts();
+          });
+
+        const prices = await test.step("Parse prices to numbers", () => {
+          return priceTexts.map(parsePrice);
+        });
+
+        const expected =
+          await test.step("Compute expected sorted prices", () => {
+            return sortPrices(prices, c.order);
+          });
+
+        await test.step("Assert prices are sorted as expected", () => {
+          expect(prices).toEqual(expected);
+        });
       });
     }
   }

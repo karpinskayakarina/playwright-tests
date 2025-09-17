@@ -26,7 +26,11 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [["html", { open: "never" }]],
+  reporter: [
+    ["html", { open: "never" }],
+    ["dot"],
+    ["json", { outputFile: "reports/report.json" }],
+  ],
 
   /* Shared settings for all the projects below. */
   use: {
@@ -34,12 +38,12 @@ export default defineConfig({
 
     testIdAttribute: "data-test",
     screenshot: "only-on-failure",
-    video: "retain-on-failure",
+    video: "on-first-retry",
     storageState: { cookies: [], origins: [] },
     contextOptions: { serviceWorkers: "block" },
 
     /* Collect trace when retrying the failed test. */
-    trace: "retain-on-failure",
+    trace: "on-first-retry",
     headless: true,
   },
 
@@ -56,13 +60,13 @@ export default defineConfig({
       dependencies: ["perform-login"],
     },
     {
-      name: "smoke",
+      name: "chromium-smoke",
       grep: /@smoke/,
       use: { ...devices["Desktop Chrome"] },
       dependencies: ["perform-login"],
     },
     {
-      name: "regression",
+      name: "chromium-regression",
       grep: /@regression/,
       use: { ...devices["Desktop Chrome"] },
       dependencies: ["perform-login"],
