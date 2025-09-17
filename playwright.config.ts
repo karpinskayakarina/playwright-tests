@@ -1,8 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import dotenv from "dotenv";
 
-dotenv.config(); // підтягує змінні з .env
-
+dotenv.config();
 /**
  * See https://playwright.dev/docs/test-configuration
  * and https://github.com/motdotla/dotenv for env variables
