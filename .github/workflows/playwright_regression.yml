@@ -1,18 +1,14 @@
 name: Playwright Regression Tests
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 3 * * *"
-  push:
+  workflow_run:
+    workflows: ["Playwright Smoke Tests"]
+    types: [completed]
     branches: [main, master]
-    paths:
-      - "tests/**"
-      - "playwright.config.ts"
-      - ".github/workflows/playwright_regression.yml"
 
 jobs:
   regression:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
