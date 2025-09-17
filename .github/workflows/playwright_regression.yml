@@ -1,33 +1,43 @@
 name: Playwright Regression Tests
+
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
   push:
     branches: [main, master]
-  pull_request:
-    branches: [main, master]
+    paths:
+      - "tests/**"
+      - "playwright.config.ts"
+      - ".github/workflows/playwright_regression.yml"
 
 jobs:
   regression:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    env:
+      BASE_URL: ${{ vars.BASE_URL }}
+      API_URL: ${{ vars.API_URL }}
+      EMAIL: ${{ secrets.EMAIL }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      NAME: ${{ vars.NAME }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Install Playwright Chrome
-        run: npx playwright install chromium
-      - name: Run Playwright regression tests
-        run: npx playwright test --grep "@regression"
-        env:
-          BASE_URL: ${{ vars.BASE_URL }}
-          API_URL: ${{ vars.API_URL }}
-          EMAIL: ${{ secrets.EMAIL }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          NAME: ${{ vars.NAME }}
-      - uses: actions/upload-artifact@v4
+      - name: Install Playwright (Chromium only)
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright regression project
+        run: npx playwright test --project=regression
+      - name: Upload Playwright report
         if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: playwright-report/
