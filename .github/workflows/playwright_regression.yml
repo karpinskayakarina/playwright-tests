@@ -36,7 +36,7 @@ jobs:
       - name: Install Playwright (Chromium only)
         run: npx playwright install --with-deps chromium
       - name: Run Playwright regression project
-        run: npx playwright test --project=regression
+        run: npx playwright test --project=chromium-regression
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
