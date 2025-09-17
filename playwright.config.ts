@@ -30,10 +30,6 @@ export default defineConfig({
 
   /* Shared settings for all the projects below. */
   use: {
-    /**
-     * Base URL to use in actions like `await page.goto('/')`.
-     * Тягнемо з env (наприклад BASE_URL у GitHub secrets/vars)
-     */
     baseURL: process.env.BASE_URL || "http://localhost:3000",
 
     testIdAttribute: "data-test",
@@ -80,8 +76,6 @@ export default defineConfig({
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
     },
-
-    /* При потребі можна розкоментувати й мобільні/брендовані браузери */
     // {
     //   name: "Mobile Chrome",
     //   use: { ...devices["Pixel 5"] },
