@@ -8,6 +8,6 @@ export const BASE_URL: string =
 export const API_URL: string =
   process.env.API_URL ?? "https://api.practicesoftwaretesting.com";
 export const EMAIL: string =
-  process.env.EMAIL ?? "customer@practicesoftwaretesting.com";
+  process.env.EMAIL ?? "karinakarpinskaya72@gmail.com";
 export const PASSWORD: string = process.env.PASSWORD!;
 export const NAME: string = process.env.NAME ?? "Jane Doe";

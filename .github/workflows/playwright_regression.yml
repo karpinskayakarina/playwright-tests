@@ -21,11 +21,11 @@ jobs:
       - name: Run Playwright regression tests
         run: npx playwright test --grep "@regression"
         env:
-          BASE_URL: ${{ secrets.BASE_URL }}
-          API_URL: ${{ secrets.API_URL }}
+          BASE_URL: ${{ vars.BASE_URL }}
+          API_URL: ${{ vars.API_URL }}
           EMAIL: ${{ secrets.EMAIL }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          NAME: ${{ secrets.NAME }}
+          NAME: ${{ vars.NAME }}
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
