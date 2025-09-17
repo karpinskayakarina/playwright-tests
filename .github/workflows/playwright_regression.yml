@@ -1,6 +1,8 @@
 name: Playwright Regression Tests
 
 on:
+  pull_request:
+    branches: [main, master]
   workflow_dispatch:
   release:
     types: [published]
