@@ -3,6 +3,7 @@ import { LoginPage } from "@pages/login.page";
 import path from "path";
 import fs from "fs";
 import { VALID_USER } from "../fixtures/credentials";
+import { VALID_USER } from "../fixtures/credentials";
 
 test.skip(
   !!process.env.CI,
@@ -17,17 +18,8 @@ test(
   async ({ page }) => {
     const login = new LoginPage(page);
 
-    await test.step("Open login page", async () => {
-      await login.goto();
-    });
-
-    await test.step("Sign in with valid credentials", async () => {
-      await login.performSuccessLogin(VALID_USER.email, VALID_USER.password);
-    });
-
-    await test.step("Persist storage state", async () => {
-      fs.mkdirSync(path.dirname(authFile), { recursive: true });
-      await page.context().storageState({ path: authFile });
-    });
+    await login.goto();
+    await login.performSuccessLogin(VALID_USER.email, VALID_USER.password);
+    await page.context().storageState({ path: authFile });
   }
 );
