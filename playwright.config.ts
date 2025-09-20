@@ -1,11 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import dotenv from "dotenv";
-
-dotenv.config();
-/**
- * See https://playwright.dev/docs/test-configuration
- * and https://github.com/motdotla/dotenv for env variables
- */
+import { BASE_URL } from "./config/baseConfig";
 
 const UI_BASE_URL =
   process.env.UI_BASE_URL ?? "https://practicesoftwaretesting.com";
@@ -26,24 +20,20 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ["html", { open: "never" }],
-    ["dot"],
-    ["json", { outputFile: "reports/report.json" }],
-  ],
+  reporter: [["html", { open: "never" }]],
 
   /* Shared settings for all the projects below. */
   use: {
-    baseURL: process.env.BASE_URL || "http://localhost:3000",
+    baseURL: BASE_URL,
 
     testIdAttribute: "data-test",
     screenshot: "only-on-failure",
-    video: "on-first-retry",
+    video: "retain-on-failure",
     storageState: { cookies: [], origins: [] },
     contextOptions: { serviceWorkers: "block" },
 
     /* Collect trace when retrying the failed test. */
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
     headless: true,
   },
 
@@ -60,13 +50,13 @@ export default defineConfig({
       dependencies: ["perform-login"],
     },
     {
-      name: "chromium-smoke",
+      name: "smoke",
       grep: /@smoke/,
       use: { ...devices["Desktop Chrome"] },
       dependencies: ["perform-login"],
     },
     {
-      name: "chromium-regression",
+      name: "regression",
       grep: /@regression/,
       use: { ...devices["Desktop Chrome"] },
       dependencies: ["perform-login"],
