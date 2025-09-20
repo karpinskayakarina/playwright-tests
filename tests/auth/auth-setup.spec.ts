@@ -1,6 +1,7 @@
 import { test } from "@playwright/test";
 import { LoginPage } from "@pages/login.page";
 import path from "path";
+import { VALID_USER } from "../fixtures/credentials";
 
 test.skip(
   !!process.env.CI,
@@ -15,12 +16,8 @@ test(
   async ({ page }) => {
     const login = new LoginPage(page);
 
-    const email = process.env.EMAIL!;
-    const password = process.env.PASSWORD!;
-
     await login.goto();
-    await login.performSuccessLogin(email, password);
-
+    await login.performSuccessLogin(VALID_USER.email, VALID_USER.password);
     await page.context().storageState({ path: authFile });
   }
 );

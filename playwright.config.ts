@@ -1,11 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import dotenv from "dotenv";
-
-dotenv.config();
-/**
- * See https://playwright.dev/docs/test-configuration
- * and https://github.com/motdotla/dotenv for env variables
- */
+import { BASE_URL } from "./config/baseConfig";
 
 const UI_BASE_URL =
   process.env.UI_BASE_URL ?? "https://practicesoftwaretesting.com";
@@ -30,7 +24,7 @@ export default defineConfig({
 
   /* Shared settings for all the projects below. */
   use: {
-    baseURL: process.env.BASE_URL || "http://localhost:3000",
+    baseURL: BASE_URL,
 
     testIdAttribute: "data-test",
     screenshot: "only-on-failure",
