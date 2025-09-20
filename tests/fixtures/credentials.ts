@@ -1,4 +1,7 @@
+import { EMAIL, PASSWORD, NAME } from "../../config/baseConfig";
+
 export const VALID_USER = {
-  email: "karinakarpinskaya72@gmail.com",
-  password: "1234%^&*karinaTest",
+  email: EMAIL,
+  password: PASSWORD,
+  name: NAME,
 };

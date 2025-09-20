@@ -1,7 +1,7 @@
 import { test as base, expect, request } from "@playwright/test";
-import { VALID_USER } from "./credentials";
 import { AllPages } from "@pages/allPages";
 import { API_BASE_URL } from "tests/config/api.config";
+import { VALID_USER } from "../fixtures/credentials";
 
 type App = {
   app: AllPages;
