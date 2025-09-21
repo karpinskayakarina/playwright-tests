@@ -8,10 +8,16 @@ test(
     tag: "@regression",
   },
   async ({ page, app }) => {
-    await page.route(`${API_BASE_URL}/products**`, mockProductsResponse);
+    await test.step("Mock GET /products API", async () => {
+      await page.route(`${API_BASE_URL}/products**`, mockProductsResponse);
+    });
 
-    await app.homePage.goto();
+    await test.step("Open home page", async () => {
+      await app.homePage.goto();
+    });
 
-    await expect(page.getByTestId("product-name")).toHaveCount(20);
+    await test.step("Assert 20 products are rendered", async () => {
+      await expect(page.getByTestId("product-name")).toHaveCount(20);
+    });
   }
 );

@@ -50,13 +50,13 @@ export default defineConfig({
       dependencies: ["perform-login"],
     },
     {
-      name: "smoke",
+      name: "chromium-smoke",
       grep: /@smoke/,
       use: { ...devices["Desktop Chrome"] },
       dependencies: ["perform-login"],
     },
     {
-      name: "regression",
+      name: "chromium-regression",
       grep: /@regression/,
       use: { ...devices["Desktop Chrome"] },
       dependencies: ["perform-login"],

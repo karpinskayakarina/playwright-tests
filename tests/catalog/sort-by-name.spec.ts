@@ -18,18 +18,36 @@ test.describe(
       test(`sort by name ${c.order}`, async ({ page }) => {
         const home = new HomePage(page);
 
-        await home.goto();
+        await test.step("Open home page", async () => {
+          await home.goto();
+        });
 
-        const before = await home.namesSignature();
-        await home.selectSort(c.label);
+        const before =
+          await test.step("Capture initial names signature", async () => {
+            return await home.namesSignature();
+          });
 
-        await home.waitUntilNamesChange(before);
-        await home.waitUntilNamesStable();
+        await test.step(`Apply sort: ${c.label}`, async () => {
+          await home.selectSort(c.label);
+        });
 
-        const actual = await home.getProductNames();
-        const expected = sortByName(actual, c.order);
+        await test.step("Wait for names to change and stabilize", async () => {
+          await home.waitUntilNamesChange(before);
+          await home.waitUntilNamesStable();
+        });
 
-        expect(actual).toEqual(expected);
+        const actual =
+          await test.step("Get product names (actual)", async () => {
+            return await home.getProductNames();
+          });
+
+        const expected = await test.step("Compute expected order", () => {
+          return sortByName(actual, c.order);
+        });
+
+        await test.step("Assert sorted order", () => {
+          expect(actual).toEqual(expected);
+        });
       });
     }
   }

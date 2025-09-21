@@ -9,12 +9,19 @@ test(
   },
   async ({ page }) => {
     const home = new HomePage(page);
-    await page.goto("/");
 
-    await home.clickCategory(PowerTools.Sander);
+    await test.step("Open home page", async () => {
+      await page.goto("/");
+    });
 
-    await expect
-      .poll(() => home.areProductsFilteredBy(PowerTools.Sander))
-      .toBe(true);
+    await test.step("Filter by Power Tools → Sander", async () => {
+      await home.clickCategory(PowerTools.Sander);
+    });
+
+    await test.step("Verify products are filtered by Sander", async () => {
+      await expect
+        .poll(() => home.areProductsFilteredBy(PowerTools.Sander))
+        .toBe(true);
+    });
   }
 );
