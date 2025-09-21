@@ -8,3 +8,5 @@ tests/playwright/.auth/
 .env
 .auth/user.json
 results.json
+playwright/.auth/
+reports/
